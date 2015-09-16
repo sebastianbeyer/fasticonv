@@ -2,9 +2,9 @@ module fortfilt
   implicit none
 
 contains
-  subroutine naive_gauss (source, filtered, size)
+  subroutine naive_gauss (source, filtered, r)
     implicit none
-    integer, intent(in)                          :: size
+    integer, intent(in)                          :: r
     double precision, intent(in)                 :: source(:,:)
     double precision, intent(out)                :: filtered(:,:)
 
@@ -28,12 +28,12 @@ contains
        do j = 1, ny
           val = 0
           wsum = 0
-          do k = i-size, i+size     ! inner loop over kernel
-             do l = j-size, j+size  ! inner loop over kernel
+          do k = i-r, i+r     ! inner loop over kernel
+             do l = j-r, j+r  ! inner loop over kernel
                 ii = min(nx, max(1,k))   ! make sure i is always inside the grid (this implies values are extendet (stretched at the boundaries))
                 jj = min(ny, max(1,l))   ! make sure j is always inside the grid (this implies values are extendet (stretched at the boundaries))
                 dsq = (j-l)**2 + (i-k)**2
-                wght = exp(-dsq / (2*size**2)) / (2*PI*size**2)
+                wght = exp(-dsq / (2*r**2)) / (2*PI*r**2)
                 val = val + source(ii,jj) * wght
                 wsum = wsum + wght
                 ! print *, i,j, k, l, ii, jj, dsq
