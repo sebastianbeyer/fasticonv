@@ -22,11 +22,9 @@ program test_filter
   write(*,"(12f4.1)") data
 
   !call naive_gauss(data, filtered_data, 2)
+  call BoxBlurH(data, filtered_data, 1)
   call BoxBlurH(data, filtered_data, 2)
   print *, "filtered H:"
-  write(*,"(12f4.1)") filtered_data
-  call BoxBlurV(data, filtered_data, 2)
-  print *, "filtered V:"
   write(*,"(12f4.1)") filtered_data
 
 end program test_filter

@@ -69,83 +69,41 @@ contains
     integer                                      :: nx, ny
     integer                                      :: dim(2)
 
-    double precision                             :: iarr  ! normalize TODO: change name!
-    double precision                             :: val  
+    double precision                             :: wght  ! weight
+    double precision                             :: sum  
     integer                                      :: i,j
-    integer                                      :: il   ! left end of accumulator
-    integer                                      :: ir   ! right end of accumulator
+    integer                                      :: il    ! leftmost  pixel which should be removed from the accumulator
+    integer                                      :: ir    ! rightmost pixel which should be added   to   the accumulator
 
     dim = shape(source)
     nx = dim(1)
     ny = dim(2)
 
-    iarr = 1. / (2.*r+1.)
-    print *, iarr
+    wght = 1. / (2.*r+1.)
+    print *, wght
 
     do j = 1, ny   ! loop over all rows
-       val = 0
-       il = r-1
-       ir = il+ 1 + r
-       ! handle left edge
-       ! handle center
-       do i = r+1, nx-r
-          val = val + source(ir,j) - source(il,j)
-          ! print *,j, i, il, ir, val
-          ir = ir + 1    ! move on
-          il = il + 1    ! move on
-          filtered(i,j) = val * iarr
+       
+       ! compute sum at first pixel
+       sum = source(1,j)
+       do i = 1, r  ! loop over box kernel
+          sum = sum + source(1,j) + source(i+1,j) ! always take 1 as left pixel, to not get out of grid
+          ! print *, sum
+       end do
+
+       ! generate output pixel, then update running sum
+       do i = 1, nx
+          ! print *, j, i, sum
+          filtered(i,j) = sum * wght
+          il = max(i-r, 1)     ! make sure we dont get off the grid
+          ir = min(i+r+1, nx)  ! make sure we dont get off the grid
+          sum = sum + source(ir,j) - source(il,j)
        end do
        
-       ! handle right edge
        
     end do
     
        
   end subroutine BoxBlurH
   
-  subroutine BoxBlurV (source, filtered, r)
-    ! computes horizontal blur
-    implicit none
-    integer, intent(in)                          :: r
-    double precision, intent(in)                 :: source(:,:)
-    double precision, intent(out)                :: filtered(:,:)
-
-    integer                                      :: nx, ny
-    integer                                      :: dim(2)
-
-    double precision                             :: iarr  ! normalize TODO: change name!
-    double precision                             :: val  
-    integer                                      :: i,j
-    integer                                      :: jt   ! top end of accumulator
-    integer                                      :: jb   ! bottom end of accumulator
-
-    dim = shape(source)
-    nx = dim(1)
-    ny = dim(2)
-
-    iarr = 1. / (2.*r+1.)
-    print *, iarr
-    print *, 1./5.
-
-    do i = 1, nx   ! loop over all columns
-       val = 0
-       jt = r-1
-       jb = jt + 1 + r
-       ! handle left edge
-       ! handle center
-       do j = r+1, ny-r
-          val = val + source(i,jb) - source(i,jt)
-          ! print *,i, j, jt, jb, val
-          jt = jt + 1    ! move on
-          jb = jb + 1    ! move on
-          filtered(i,j) = val * iarr
-       end do
-       
-       ! handle right edge
-       
-    end do
-    
-       
-  end subroutine BoxBlurV
-
 end module fortfilt
