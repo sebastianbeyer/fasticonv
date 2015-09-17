@@ -135,7 +135,33 @@ contains
     ! transpose again, to get back initial shape
     filtered = transpose (filtered_t)
     
-
   end subroutine BoxBlur
+
+  
+  subroutine fastGauss (source, filtered, r)
+    ! computes a fast approximation to a Gaussian filter, by applying a series of box filters
+    implicit none
+    integer, intent(in)                          :: r
+    double precision, intent(in)                 :: source(:,:)
+    double precision, intent(out)                :: filtered(:,:)
+    
+    integer                                      :: nx, ny
+    integer                                      :: dim(2)
+    
+    double precision, allocatable                :: tmpfilter1(:,:)   ! tmp array to store intermediate results
+    double precision, allocatable                :: tmpfilter2(:,:)   ! tmp array to store intermediate results
+    
+    dim = shape(source)
+    nx = dim(1)
+    ny = dim(2)
+    allocate(tmpfilter1(nx,ny))
+    allocate(tmpfilter2(nx,ny))
+
+    call BoxBlur (source, tmpfilter1, r)
+    call BoxBlur (tmpfilter1, tmpfilter2, r)
+    call BoxBlur (tmpfilter2, filtered, r)
+
+  end subroutine fastGauss
+  
   
 end module fortfilt

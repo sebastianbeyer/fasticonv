@@ -22,7 +22,7 @@ program test_filter
   write(*,"(12f4.1)") data
 
   ! call naive_gauss(data, filtered_data, 2)
-  call BoxBlur(data, filtered_data, 2)
+  call fastGauss(data, filtered_data, 1)
   print *, "filtered:"
   write(*,"(12f4.1)") filtered_data
 
