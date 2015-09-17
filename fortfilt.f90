@@ -1,6 +1,10 @@
 module fortfilt
   implicit none
 
+  private !everything private by default
+  public :: naive_gauss
+  public :: fastGauss
+
 contains
   subroutine naive_gauss (source, filtered, r)
     implicit none
