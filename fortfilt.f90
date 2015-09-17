@@ -105,5 +105,37 @@ contains
     
        
   end subroutine BoxBlurH
+
+  
+  subroutine BoxBlur (source, filtered, r)
+    ! computes box blur, by calling horizontal boxblur twice, the second time with tansposed matrix
+    implicit none
+    integer, intent(in)                          :: r
+    double precision, intent(in)                 :: source(:,:)
+    double precision, intent(out)                :: filtered(:,:)
+    
+    integer                                      :: nx, ny
+    integer                                      :: dim(2)
+    
+    double precision, allocatable                :: source_t(:,:)   ! source transposed
+    double precision, allocatable                :: filtered_t(:,:)   ! filtered transposed
+    
+    dim = shape(source)
+    nx = dim(1)
+    ny = dim(2)
+    allocate(source_t(ny,nx))
+    allocate(filtered_t(ny,nx))
+
+
+    ! first horizontal blur
+    call BoxBlurH (source, filtered, r)
+    ! then transpose result and call horizontal blur again, now really doing vertical blur
+    source_t = transpose (filtered)
+    call BoxBlurH (source_t, filtered_t, r)
+    ! transpose again, to get back initial shape
+    filtered = transpose (filtered_t)
+    
+
+  end subroutine BoxBlur
   
 end module fortfilt
