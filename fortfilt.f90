@@ -1,12 +1,12 @@
 module fortfilt
   implicit none
 
-  private !everything private by default
-  public :: naive_gauss
+  private ! everything private by default
+  public :: naiveGauss
   public :: fastGauss
 
 contains
-  subroutine naive_gauss (source, filtered, r)
+  subroutine naiveGauss (source, filtered, r)
     implicit none
     integer, intent(in)                          :: r
     double precision, intent(in)                 :: source(:,:)
@@ -45,22 +45,8 @@ contains
        end do
     end do
     
-  end subroutine naive_gauss
+  end subroutine naiveGauss
 
-  subroutine fast_gauss (source, filtered, r)
-    implicit none
-    integer, intent(in)                          :: r
-    double precision, intent(in)                 :: source(:,:)
-    double precision, intent(out)                :: filtered(:,:)
-
-    integer                                      :: nx, ny
-    integer                                      :: dim(2)
-    
-    dim = shape(source)
-    nx = dim(1)
-    ny = dim(2)
-
-  end subroutine fast_gauss
   
   subroutine BoxBlurH (source, filtered, r)
     ! computes horizontal blur
@@ -85,7 +71,6 @@ contains
     wght = 1.d0 / (2.d0*r+1.d0)
 
     do j = 1, ny   ! loop over all rows
-       
        ! compute sum at first pixel
        sum = source(1,j)
        do i = 1, r  ! loop over box kernel
@@ -101,10 +86,7 @@ contains
           ir = min(i+r+1, nx)  ! make sure we dont get off the grid
           sum = sum + source(ir,j) - source(il,j)
        end do
-       
-       
     end do
-    
        
   end subroutine BoxBlurH
 

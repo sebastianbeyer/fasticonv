@@ -21,7 +21,7 @@ program test_filter
 
   write(*,"(12f4.1)") data
 
-  call naive_gauss(data, filtered_data, 3)
+  call naiveGauss(data, filtered_data, 3)
   print *, "naive Gauss filtered:"
   write(*,"(12f4.1)") filtered_data
   print *, "sum:", sum(filtered_data)
