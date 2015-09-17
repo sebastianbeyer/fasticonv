@@ -22,7 +22,6 @@ contains
     nx = dim(1)
     ny = dim(2)
 
-    print *, nx, ny
     do i = 1, nx
        do j = 1, ny
           val = 0
@@ -80,7 +79,6 @@ contains
     ny = dim(2)
 
     wght = 1.d0 / (2.d0*r+1.d0)
-    print *, wght
 
     do j = 1, ny   ! loop over all rows
        
