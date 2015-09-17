@@ -21,9 +21,13 @@ program test_filter
 
   write(*,"(12f4.1)") data
 
-  ! call naive_gauss(data, filtered_data, 2)
-  call fastGauss(data, filtered_data, 1)
-  print *, "filtered:"
+  call naive_gauss(data, filtered_data, 3)
+  print *, "naive Gauss filtered:"
   write(*,"(12f4.1)") filtered_data
+  print *, "sum:", sum(filtered_data)
+  call fastGauss(data, filtered_data, 1)
+  print *, "three times box filtered:"
+  write(*,"(12f4.1)") filtered_data
+  print *, "sum:", sum(filtered_data)
 
 end program test_filter
