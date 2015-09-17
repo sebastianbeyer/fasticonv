@@ -4,6 +4,7 @@ module fortfilt
   private ! everything private by default
   public :: naiveGauss
   public :: fastGauss
+  public :: BoxBlur
 
 contains
   subroutine naiveGauss (source, filtered, r)
