@@ -32,7 +32,7 @@ contains
                 ii = min(nx, max(1,k))   ! make sure i is always inside the grid (this implies values are extendet (stretched at the boundaries))
                 jj = min(ny, max(1,l))   ! make sure j is always inside the grid (this implies values are extendet (stretched at the boundaries))
                 dsq = (j-l)**2 + (i-k)**2
-                wght = exp(-dsq / (2*r**2)) / (2*PI*r**2)
+                wght = exp(-dsq / (2.d0*r**2)) / (2.d0*PI*r**2)
                 val = val + source(ii,jj) * wght
                 wsum = wsum + wght
                 ! print *, i,j, k, l, ii, jj, dsq
@@ -79,7 +79,7 @@ contains
     nx = dim(1)
     ny = dim(2)
 
-    wght = 1. / (2.*r+1.)
+    wght = 1.d0 / (2.d0*r+1.d0)
     print *, wght
 
     do j = 1, ny   ! loop over all rows
