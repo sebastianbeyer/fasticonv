@@ -54,11 +54,11 @@ program test_performance
         print *, "sum:", sum(filtered_data)
      case ("fast")
         print *, "Doing fast gauss filter on a field of", nx, "by", ny, "with radius", r
-        call fastGauss(data, filtered_data, 1)
+        call fastGauss(data, filtered_data, r)
         print *, "sum:", sum(filtered_data)
      case ("box")
         print *, "Doing box filter on a field of", nx, "by", ny, "with radius", r
-        call BoxBlur(data, filtered_data, 1)
+        call BoxBlur(data, filtered_data, r)
         print *, "sum:", sum(filtered_data)
         
      case default
