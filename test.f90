@@ -17,6 +17,7 @@ program test_filter
   ! end do
 
   data = 0
+  filtered_data = 0
   data(6,4) = 15
 
   write(*,"(12f4.1)") data
@@ -27,6 +28,17 @@ program test_filter
   print *, "sum:", sum(filtered_data)
   call fastGauss(data, filtered_data, 1)
   print *, "three times box filtered:"
+  write(*,"(12f4.1)") filtered_data
+  print *, "sum:", sum(filtered_data)
+  data = 0
+  data(6,4) = 15
+  filtered_data = 0
+  call naiveBox(data, filtered_data, 1)
+  print *, "naive box filtered:"
+  write(*,"(12f4.1)") filtered_data
+  print *, "sum:", sum(filtered_data)
+  call BoxBlur(data, filtered_data, 1)
+  print *, "fast box filtered:"
   write(*,"(12f4.1)") filtered_data
   print *, "sum:", sum(filtered_data)
 

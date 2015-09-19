@@ -60,6 +60,10 @@ program test_performance
         print *, "Doing box filter on a field of", nx, "by", ny, "with radius", r
         call BoxBlur(data, filtered_data, r)
         print *, "sum:", sum(filtered_data)
+     case ("naivebox")
+        print *, "Doing naive box filter on a field of", nx, "by", ny, "with radius", r
+        call naiveBox(data, filtered_data, r)
+        print *, "sum:", sum(filtered_data)
         
      case default
         print *, "Method ",method, "not found."

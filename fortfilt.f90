@@ -5,6 +5,7 @@ module fortfilt
   public :: naiveGauss
   public :: fastGauss
   public :: BoxBlur
+  public :: naiveBox
 
 contains
   subroutine naiveGauss (source, filtered, r)
@@ -147,6 +148,47 @@ contains
     call BoxBlur (tmpfilter2, filtered, r)
 
   end subroutine fastGauss
+
+  subroutine naiveBox(source, filtered, r)
+    ! computes a box filter as in the original code from Ann Lebrocq to compare against
+    implicit none
+    
+    integer, intent(in)                          :: r
+    double precision, intent(in)                 :: source(:,:)
+    double precision, intent(out)                :: filtered(:,:)
+    
+    integer                                      :: nx, ny
+    integer                                      :: dim(2)
+    
+    integer                                      :: i,j,ii,jj !,nlen,xlen,ylen,jjl,jjh,iil,iih
+    double precision                             :: dsum, dcount
+    
+    dim = shape(source)
+    nx = dim(1)
+    ny = dim(2)
+
+    do j=r+1,ny-r-1
+      do i=r+1,nx-r-1
+        dsum = 0.0
+        dcount = 0.0
+        if ( source(i,j) >= 0 ) then   ! was imask before, but we want to avoid additional arrays for comparison
+            do jj=j-r,j+r
+              do ii=i-r,i+r
+                if ( source(ii,jj) >= 0) then
+                  dsum = dsum + source(ii,jj)
+                  dcount = dcount + 1.0
+                  filtered(i,j) = dsum/dcount
+                end if
+              end do
+            end do
+        else
+          filtered(i,j) = source(i,j)
+        end if
+      end do
+    end do
+
+
+  end subroutine naiveBox
   
   
 end module fortfilt
