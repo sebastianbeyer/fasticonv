@@ -3,3 +3,6 @@
 test
 performancetest
 gmon.out
+*.png
+*.ps
+*.txt
